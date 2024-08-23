@@ -46,10 +46,11 @@ def load_chat(latest_block):
     })
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    try:
-        asyncio.run(keep_chat_updated(event_filter, 2))
-    except KeyboardInterrupt:
-        pass
+    while True:
+        try:
+            asyncio.run(keep_chat_updated(event_filter, 2))
+        except KeyboardInterrupt:
+            break
 
 
 def output_line(log):
