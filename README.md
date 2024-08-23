@@ -1,4 +1,4 @@
-# dysnoma-chat-log
+# dysnomia-chat-log
 
 Read the Dysnomia chat log in real time.
 
