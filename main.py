@@ -99,8 +99,8 @@ if __name__ == '__main__':
             os.remove(log_file)
         latest_block = web3.eth.get_block('latest')
         block_cache[latest_block.number] = latest_block
-        earliest_block_number = 21220693
-        preload_chat(earliest_block_number, latest_block.number)
+        start_block_number = os.getenv('START_BLOCK')
+        preload_chat(start_block_number, latest_block.number)
         room['preloaded'] = True
         room['last_block'] = latest_block.number
     else:
