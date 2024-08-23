@@ -15,7 +15,7 @@ log_contract = web3.eth.contract(
     os.getenv('LOG_CONTRACT_ADDRESS'),
     abi=json.load(open("./data/abi/{}".format(os.getenv('LOG_CONTRACT_ABI_FILE'))))
 )
-
+block_cache = {}
 
 async def keep_chat_updated(event_filter, poll_interval):
     while True:
@@ -90,7 +90,7 @@ if __name__ == '__main__':
         if os.path.exists(log_file):
             os.remove(log_file)
         latest_block = web3.eth.get_block('latest')
-        block_cache = {latest_block.number: latest_block}
+        block_cache[latest_block.number] = latest_block
         earliest_block_number = 21220693
         preload_chat(earliest_block_number, latest_block.number)
         room['preloaded'] = True
