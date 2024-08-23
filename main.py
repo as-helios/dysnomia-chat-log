@@ -54,11 +54,6 @@ def output_line(log):
     except Exception as e:
         return
     if decoded_data[0]['args']['Aura'] and decoded_data[0]['args']['Soul']:
-        # save latest block number
-        room = json.load(open(room_file := "{}/rooms/{}.json".format(os.getenv('DATA_FOLDER'), os.getenv('CHANNEL_NAME')), 'r'))
-        room['last_block'] = tx_receipt['blockNumber']
-        open(room_file, 'w').write(json.dumps(room))
-
         # get the block and save it to cache
         block_number = tx_receipt['blockNumber']
         if block_number not in block_cache:
@@ -68,6 +63,11 @@ def output_line(log):
         log_message("VOID", decoded_data[0]['args']['LogLine'])
         timestamp = datetime.fromtimestamp(block_cache[block_number]['timestamp'], tz=timezone.utc)
         print("[{}] {}".format(timestamp.strftime("%Y-%m-%d %H:%M:%S"), decoded_data[0]['args']['LogLine']))
+
+        # save latest block number
+        room = json.load(open(room_file := "{}/rooms/{}.json".format(os.getenv('DATA_FOLDER'), os.getenv('CHANNEL_NAME')), 'r'))
+        room['last_block'] = tx_receipt['blockNumber']
+        open(room_file, 'w').write(json.dumps(room))
 
 
 if __name__ == '__main__':
