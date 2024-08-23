@@ -10,12 +10,14 @@ from web3 import Web3, HTTPProvider
 from common import *
 from logs import *
 
+warnings.filterwarnings("ignore")
 web3 = Web3(HTTPProvider(os.getenv('RPC_SERVER')))
 log_contract = web3.eth.contract(
     os.getenv('LOG_CONTRACT_ADDRESS'),
     abi=json.load(open("./data/abi/{}".format(os.getenv('LOG_CONTRACT_ABI_FILE'))))
 )
 block_cache = {}
+
 
 async def keep_chat_updated(event_filter, poll_interval):
     while True:
@@ -31,7 +33,6 @@ def preload_chat(earliest_block, latest_block):
         "topics": ["0x6b81130c485ac9b98332fa40c2e57900867815b0fe1497e1a168caf930fc9c9d"],
         "address": os.getenv('LOG_CONTRACT_ADDRESS')
     })
-    warnings.filterwarnings("ignore")
     for log in event_logs:
         output_line(log)
 
