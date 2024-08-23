@@ -60,7 +60,7 @@ def output_line(log):
             block_cache[block_number] = web3.eth.get_block(block_number)
 
         # log the message and output to console
-        log_message("VOID", decoded_data[0]['args']['LogLine'])
+        log_message(os.getenv('CHANNEL_NAME'), decoded_data[0]['args']['LogLine'])
         timestamp = datetime.fromtimestamp(block_cache[block_number]['timestamp'], tz=timezone.utc)
         print("[{}] {}".format(timestamp.strftime("%Y-%m-%d %H:%M:%S"), decoded_data[0]['args']['LogLine']))
 
