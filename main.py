@@ -1,6 +1,7 @@
 import asyncio
 import json
 import os
+import re
 import warnings
 from datetime import datetime, timezone
 from json import JSONDecodeError
@@ -64,9 +65,10 @@ def output_line(log):
             block_cache[block_number] = web3.eth.get_block(block_number)
 
         # log the message and output to console
-        log_message(os.getenv('CHANNEL_NAME'), decoded_data[0]['args']['LogLine'])
+        message = "{}:{} {}".format(decoded_data[0]['args']['Aura'], decoded_data[0]['args']['Soul'], decoded_data[0]['args']['LogLine'])
+        log_message(os.getenv('CHANNEL_NAME'), message)
         timestamp = datetime.fromtimestamp(block_cache[block_number]['timestamp'], tz=timezone.utc)
-        print("[{}] {}".format(timestamp.strftime("%Y-%m-%d %H:%M:%S"), decoded_data[0]['args']['LogLine']))
+        print("[{}] {}".format(timestamp.strftime("%Y-%m-%d %H:%M:%S"), message if os.getenv('SHOW_AURA_AND_SOUL') != '0' else decoded_data[0]['args']['LogLine']))
 
         # save latest block number
         room = json.load(open(room_file := "{}/rooms/{}.json".format(os.getenv('DATA_FOLDER'), os.getenv('CHANNEL_NAME')), 'r'))
@@ -103,8 +105,13 @@ if __name__ == '__main__':
     else:
         # print past log to console
         logs = read_file_to_list(log_file)
-        for log in logs:
-            print(log)
+        for i, log in enumerate(logs):
+            if os.getenv('SHOW_AURA_AND_SOUL') != '0':
+                print(log)
+            else:
+                match = re.match(r'^.*( [\d]+:[\d]+) .*$', log)
+                if match:
+                    print(log.replace(match.group(1), ''))
     open(room_file, 'w').write(json.dumps(room))
     # check for new messages
     load_chat(room['last_block'])
