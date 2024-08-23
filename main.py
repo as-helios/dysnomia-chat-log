@@ -54,9 +54,9 @@ def output_line(log):
         return
     if decoded_data[0]['args']['Aura'] and decoded_data[0]['args']['Soul']:
         # save latest block number
-        rooms = json.load(open(room_file := "{}/rooms.json".format(os.getenv('DATA_FOLDER')), 'r'))
-        rooms['VOID']['last_block'] = tx_receipt['blockNumber']
-        open(room_file, 'w').write(json.dumps(rooms))
+        room = json.load(open(room_file := "{}/rooms/{}.json".format(os.getenv('DATA_FOLDER'), os.getenv('CHANNEL_NAME')), 'r'))
+        room['last_block'] = tx_receipt['blockNumber']
+        open(room_file, 'w').write(json.dumps(room))
 
         # get the block and save it to cache
         block_number = tx_receipt['blockNumber']
@@ -87,7 +87,8 @@ if __name__ == '__main__':
     log_file = "{}/logs/{}.log".format(os.getenv('DATA_FOLDER'), "VOID")
     # grab the entire log if the log file doesn't exist
     if not room['preloaded']:
-        os.remove(log_file)
+        if os.path.exists(log_file):
+            os.remove(log_file)
         latest_block = web3.eth.get_block('latest')
         block_cache = {latest_block.number: latest_block}
         earliest_block_number = 21220693
