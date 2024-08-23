@@ -30,7 +30,7 @@ def preload_chat(earliest_block, latest_block):
     event_logs = web3.eth.get_logs({
         "fromBlock": int(earliest_block),
         "toBlock": int(latest_block),
-        "topics": ["0x6b81130c485ac9b98332fa40c2e57900867815b0fe1497e1a168caf930fc9c9d"],
+        "topics": [os.getenv('LOG_TOPIC')],
         "address": os.getenv('LOG_CONTRACT_ADDRESS')
     })
     for log in event_logs:
@@ -38,7 +38,11 @@ def preload_chat(earliest_block, latest_block):
 
 
 def load_chat(latest_block):
-    event_filter = log_contract.events.LogEvent.create_filter(fromBlock=latest_block)
+    event_filter = web3.eth.filter({
+        "fromBlock": int(latest_block),
+        "topics": [os.getenv('LOG_TOPIC')],
+        "address": os.getenv('LOG_CONTRACT_ADDRESS')
+    })
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     try:
