@@ -117,7 +117,6 @@ if __name__ == '__main__':
                 start_block_number = os.getenv('START_BLOCK')
                 preload_chat(start_block_number, latest_block.number)
                 room['preloaded'] = True
-                room['last_block'] = latest_block.number
             else:
                 # print past log to console
                 logs = read_file_to_list(log_file)
@@ -129,7 +128,7 @@ if __name__ == '__main__':
                         if match:
                             print(log.replace(match.group(1), ''))
                 preload_chat(room['last_block'], latest_block.number)
-                room['last_block'] = latest_block.number
+            room['last_block'] = latest_block.number
             open(room_file, 'w').write(json.dumps(room))
             # check for new messages
             load_chat(room['last_block'])
