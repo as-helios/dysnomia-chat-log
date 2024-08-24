@@ -92,7 +92,7 @@ def output_line(event):
 if __name__ == '__main__':
     while True:
         try:
-            os.system('clear')
+            os.system('cls' if os.name == 'nt' else 'clear')
             # create the log and rooms folder if it doesn't exist
             os.makedirs("{}/logs/".format(os.getenv('DATA_FOLDER')), exist_ok=True)
             os.makedirs("{}/rooms/".format(os.getenv('DATA_FOLDER')), exist_ok=True)
