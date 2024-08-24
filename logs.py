@@ -20,7 +20,7 @@ def set_channel_logger(channel_name, level=logging.INFO):
     os.makedirs("{}/logs/".format(os.getenv("DATA_FOLDER")), exist_ok=True)
     log_file = "{}/logs/{}.log".format(os.getenv("DATA_FOLDER"), channel_name)
     handler = TimedRotatingFileHandler(log_file, when="midnight", interval=1, utc=True)
-    handler.setFormatter(logging.Formatter("[%(asctime)s] %(message)s", "%Y-%m-%d %H:%M:%S"))
+    handler.setFormatter(logging.Formatter("%(message)s"))
     logger = logging.getLogger(channel_name)
     logger.setLevel(level)
     logger.addHandler(handler)

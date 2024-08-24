@@ -78,9 +78,9 @@ def output_line(event):
                 raise Exception("Could not get block {}".format(block_number))
 
         # log the message and output to console
-        message = "{}:{} {}".format(decoded_data[0]['args']['Soul'], decoded_data[0]['args']['Aura'], decoded_data[0]['args']['LogLine'])
-        log_message(os.getenv('CHANNEL_NAME'), message)
         timestamp = datetime.fromtimestamp(block_cache[block_number]['timestamp'], tz=timezone.utc)
+        message = "{}:{} {}".format(decoded_data[0]['args']['Soul'], decoded_data[0]['args']['Aura'], decoded_data[0]['args']['LogLine'])
+        log_message(os.getenv('CHANNEL_NAME'), "[{}] {}".format(timestamp.strftime("%Y-%m-%d %H:%M:%S"), message))
         print("[{}] {}".format(timestamp.strftime("%Y-%m-%d %H:%M:%S"), message if os.getenv('SHOW_AURA_AND_SOUL') != '0' else decoded_data[0]['args']['LogLine']))
 
         # save latest block number
