@@ -1,18 +1,18 @@
 import asyncio
 import json
-import os
 import re
 import warnings
 from datetime import datetime, timezone
 from json import JSONDecodeError
 
-from web3 import Web3, HTTPProvider
+from web3 import Web3
+from web3_multi_provider import FallbackProvider
 
 from common import *
 from logs import *
 
 warnings.filterwarnings("ignore")
-web3 = Web3(HTTPProvider(os.getenv('RPC_SERVER')))
+web3 = Web3(FallbackProvider(json.loads(os.getenv('RPC_SERVER'))))
 log_contract = web3.eth.contract(
     os.getenv('LOG_CONTRACT_ADDRESS'),
     abi=json.load(open("./data/abi/{}".format(os.getenv('LOG_CONTRACT_ABI_FILE'))))
