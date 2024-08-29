@@ -79,7 +79,7 @@ def output_line(event):
 
         # log the message and output to console
         timestamp = datetime.fromtimestamp(block_cache[block_number]['timestamp'], tz=timezone.utc)
-        message = "{}:{} {}".format(decoded_data[0]['args']['Soul'], decoded_data[0]['args']['Aura'], decoded_data[0]['args']['LogLine'])
+        message = "{}:{} {}".format(decoded_data[0]['args']['Aura'], decoded_data[0]['args']['Soul'], decoded_data[0]['args']['LogLine'])
         log_message(os.getenv('CHANNEL_NAME'), "[{}] {}".format(timestamp.strftime("%Y-%m-%d %H:%M:%S"), message))
         print("[{}] {}".format(timestamp.strftime("%Y-%m-%d %H:%M:%S"), message if os.getenv('SHOW_AURA_AND_SOUL') != '0' else decoded_data[0]['args']['LogLine']))
 
